@@ -20,6 +20,7 @@ pub use self::file_ops::{
 };
 pub use self::file_table::{FileDesc, FileTable};
 pub use self::fs_view::FsView;
+pub use self::host_file::{HostFd, HostFile};
 pub use self::inode_file::{AsINodeFile, INodeExt, INodeFile};
 pub use self::pipe::PipeType;
 pub use self::rootfs::ROOT_INODE;
@@ -35,6 +36,7 @@ mod file_ops;
 mod file_table;
 mod fs_ops;
 mod fs_view;
+mod host_file;
 mod hostfs;
 mod inode_file;
 mod pipe;
