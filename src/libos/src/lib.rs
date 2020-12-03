@@ -19,6 +19,8 @@
 #![feature(maybe_uninit_extra)]
 
 #[macro_use]
+extern crate async_rt;
+#[macro_use]
 extern crate alloc;
 #[macro_use]
 extern crate bitflags;
