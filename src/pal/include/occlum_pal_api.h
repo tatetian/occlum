@@ -124,6 +124,8 @@ int occlum_pal_create_process(struct occlum_pal_create_process_args *args);
 int occlum_pal_run_vcpu(void);
 
 
+int occlum_pal_exec_benchmark(void);
+
 /*
  * @brief Send a signal to one or multiple LibOS processes
  *

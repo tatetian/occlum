@@ -143,6 +143,24 @@ int occlum_pal_run_vcpu(void) {
     return 0;
 }
 
+int occlum_pal_exec_benchmark(void) {
+    sgx_enclave_id_t eid = pal_get_enclave_id();
+    if (eid == SGX_INVALID_ENCLAVE_ID) {
+        errno = ENOENT;
+        PAL_ERROR("Enclave is not initialized yet.");
+        return -1;
+    }
+
+    sgx_status_t ecall_status = occlum_ecall_exec_benchmark(eid);
+    if (ecall_status != SGX_SUCCESS) {
+        const char *sgx_err = pal_get_sgx_error_msg(ecall_status);
+        PAL_ERROR("Failed to do ECall: %s", sgx_err);
+        return -1;
+    }
+
+    return 0;
+}
+
 int occlum_pal_kill(int pid, int sig) {
     sgx_enclave_id_t eid = pal_get_enclave_id();
     if (eid == SGX_INVALID_ENCLAVE_ID) {

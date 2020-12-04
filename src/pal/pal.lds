@@ -4,6 +4,7 @@
         occlum_pal_init;
         occlum_pal_create_process;
         occlum_pal_exec;
+        occlum_pal_exec_benchmark;
         occlum_pal_kill;
         occlum_pal_destroy;
         pal_get_version;

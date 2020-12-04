@@ -65,6 +65,10 @@ int main(int argc, char *argv[]) {
         return 127;
     }
 
+    if (occlum_pal_exec_benchmark() < 0) {
+        return 127;
+    }
+
     int futex_val;
     while ((futex_val = exit_status) < 0) {
         (void)FUTEX_WAIT_TIMEOUT(&exit_status, futex_val, NULL);

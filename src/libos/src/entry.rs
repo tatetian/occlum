@@ -161,6 +161,39 @@ pub extern "C" fn occlum_ecall_shutdown_vcpus() -> i32 {
 }
 
 #[no_mangle]
+pub extern "C" fn occlum_ecall_exec_benchmark() -> i32 {
+    debug!("benchmark start!");
+    //benchmark_async();
+    benchmark_ocall();
+    debug!("benchmark end!");
+    0
+}
+
+fn benchmark_ocall() {
+    let repeats = 100_000;
+    let start = crate::time::do_gettimeofday().as_duration();
+    for _ in 0..repeats {
+        crate::sched::do_sched_yield();
+    }
+    let end = crate::time::do_gettimeofday().as_duration();
+    let elapsed = (end - start) / repeats;
+    println!("eleapsed = {:?}", &elapsed);
+}
+
+fn benchmark_async() {
+    async_rt::task::block_on(async {
+        let repeats = 1_000_000;
+        let start = crate::time::do_gettimeofday().as_duration();
+        for _ in 0..repeats {
+            async_rt::sched::yield_().await;
+        }
+        let end = crate::time::do_gettimeofday().as_duration();
+        let elapsed = (end - start) / repeats;
+        println!("eleapsed = {:?}", &elapsed);
+    });
+}
+
+#[no_mangle]
 pub extern "C" fn occlum_ecall_exec_thread(libos_pid: i32, host_tid: i32) -> i32 {
     if HAS_INIT.load(Ordering::SeqCst) == false {
         return ecall_errno!(EAGAIN);
