@@ -160,6 +160,7 @@ impl EpollFile {
             self.host_file_epoller.poll_events(max_count);
 
             // Prepare for the waiter.wait_mut() at the end of the loop
+            waiter.reset();
             self.waiters.enqueue(waiter);
 
             // Pop from the ready list to find as many results as possible
@@ -226,9 +227,6 @@ impl EpollFile {
             // Wait for a while to try again later.
             let ret = waiter.wait_mut(timeout.as_mut());
             if let Err(e) = ret {
-                // In case of any error, the waiter needs to be dequeued manually
-                self.waiters.dequeue(waiter);
-
                 if e.errno() == ETIMEDOUT {
                     return Ok(0);
                 } else {
@@ -236,7 +234,6 @@ impl EpollFile {
                 }
             }
             // This means we have been waken up successfully. Let's try again.
-            waiter.reset();
         }
     }
 
