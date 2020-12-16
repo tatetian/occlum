@@ -220,6 +220,7 @@ impl EpollFile {
                     self.push_ready_iter(reinsert.into_iter());
                 }
 
+                self.waiters.dequeue(waiter);
                 return Ok(count);
             }
 
