@@ -160,6 +160,7 @@ impl EpollFile {
             self.host_file_epoller.poll_events(max_count);
 
             // Prepare for the waiter.wait_mut() at the end of the loop
+            waiter.reset();
             self.waiters.enqueue(waiter);
 
             // Pop from the ready list to find as many results as possible
@@ -236,7 +237,6 @@ impl EpollFile {
                 }
             }
             // This means we have been waken up successfully. Let's try again.
-            waiter.reset();
         }
     }
 
